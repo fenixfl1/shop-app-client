@@ -1,8 +1,8 @@
 import React from 'react'
-import { Home } from './pages'
+import Routes from './routes'
 
 function App(): React.ReactElement {
-  return <Home />
+  return <Routes />
 }
 
 export default App
