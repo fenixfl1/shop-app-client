@@ -1,0 +1,33 @@
+.site-layout-content {
+  min-height: calc(86vh);
+  padding: 24px;
+  background: #fff;
+}
+#components-layout-demo-top .logo {
+  float: left;
+  width: 120px;
+  height: 31px;
+  margin: 16px 24px 16px 0;
+  background: rgba(255, 255, 255, 0.3);
+}
+.ant-row-rtl #components-layout-demo-top .logo {
+  float: right;
+  margin: 16px 0 16px 24px;
+}
+
+.login-card-container {
+  min-height: calc(86vh);
+}
+
+@media screen and (min-width: 360px) {
+  .site-layout-content {
+    padding: 0px;
+    background: inherit;
+    width: 100%;
+    height: max-content;
+  }
+
+  .login-card-container {
+    height: max-content;
+  }
+}
