@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
+import { WEB_SERVICE_API_PRODUCTS } from '../constants/routes'
 import { getSessionToken } from './session'
 
 type RequestHeaders = {
@@ -51,4 +52,12 @@ function getRequest<T>(url: string): Promise<AxiosResponse<T>> {
   const config = getResponseParams()
 
   return axios.get(url, config)
+}
+
+const getProducts = (): Promise<AxiosResponse> => {
+  return getRequest(`${WEB_SERVICE_API_PRODUCTS}`)
+}
+
+export const productsApiHelper = {
+  getProducts,
 }

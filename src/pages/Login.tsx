@@ -1,7 +1,7 @@
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { Button, Card, Checkbox, Col, Form, Input, Row } from 'antd'
 import React from 'react'
-import { Link, Redirect, useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import RoutesWrapper from '../components/RoutesWrapper'
 import { PATH_REGISTER_USER, PATH_MAIN } from '../constants/routes'
@@ -21,11 +21,10 @@ const Login = (): React.ReactElement => {
   const history = useHistory()
 
   const onFinish = () => {
-    const next = `/${window.location.search.substring(1).split('=')[1] || ''}`
-    // eslint-disable-next-line no-console
-    console.log({ next })
-    history.push(next ? next : PATH_MAIN)
-    return <Redirect to={next ? next : PATH_MAIN} />
+    const next = `/${
+      window.location.search.substring(1).split('=')[1] || PATH_MAIN
+    }`
+    history.push(next)
   }
 
   return (
@@ -35,7 +34,7 @@ const Login = (): React.ReactElement => {
         className={'login-card-container'}
         align={'middle'}
       >
-        <Col xs={24} md={5}>
+        <Col xs={7} lg={5}>
           <Card style={{ borderRadius: '8px' }}>
             <Form
               className="login-form"
