@@ -1,9 +1,5 @@
 import { call, ForkEffect, put, takeLatest } from 'redux-saga/effects'
-import {
-  GetProductsAction,
-  getProductsSuccess,
-  getProductsFailure,
-} from '../actions/products'
+import { getProductsSuccess, getProductsFailure } from '../actions/products'
 import { PRODUCTS_GET_PRODUCTS_LIST } from '../constants/actions'
 import { productsApiHelper } from '../utils/api'
 
@@ -12,8 +8,8 @@ function* getProductsSaga() {
     const { data: response } = yield call(() => {
       return productsApiHelper.getProducts()
     })
-    const { data } = response
-    yield put(getProductsSuccess(data))
+
+    yield put(getProductsSuccess(new Array(...response)))
   } catch ({ response }) {
     yield put(getProductsFailure())
   }

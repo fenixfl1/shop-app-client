@@ -19,6 +19,10 @@
   min-height: calc(86vh);
 }
 
+.input-number-text-center > div[class='ant-input-number-input-wrap'] > input {
+  text-align: center !important;
+}
+
 @media screen and (min-width: 360px) {
   .site-layout-content {
     padding: 0px;

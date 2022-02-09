@@ -2,8 +2,10 @@ import React from 'react'
 import { Redirect } from 'react-router-dom'
 import { PATH_LOGIN } from '../constants/routes'
 import { isLoggedIn } from '../utils/session'
-import { Layout } from 'antd'
+import { Layout, Spin } from 'antd'
 import NavigationBar from './NavigationBar'
+import { useSelector } from 'react-redux'
+import { StoreState } from '../reducers'
 
 const { Content, Footer } = Layout
 
@@ -16,6 +18,9 @@ const RoutesWrapper: React.FC<ProtectedRoutesProps> = ({
   protect = false,
   ...props
 }): React.ReactElement => {
+  const { fetchingProducts } = useSelector(
+    (state: StoreState) => state.products
+  )
   if (isLoggedIn() && protect) {
     return (
       <Redirect
@@ -31,11 +36,13 @@ const RoutesWrapper: React.FC<ProtectedRoutesProps> = ({
           <NavigationBar />
         </Content>
       </Layout>
-      <Content style={{ padding: '0 50px' }}>
-        <div className="site-layout-content">{props.children}</div>
-      </Content>
+      <Spin spinning={fetchingProducts} size={'large'}>
+        <Content style={{ padding: '0 50px' }}>
+          <div className="site-layout-content">{props.children}</div>
+        </Content>
+      </Spin>
       <Footer style={{ textAlign: 'center' }}>
-        Shop App ©{`${new Date().getFullYear()}`} Created by KODIGO's Students
+        FAST SHOP ©{`${new Date().getFullYear()}`} Created by KODIGO's Students
       </Footer>
     </Layout>
   )

@@ -1,14 +1,14 @@
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { Button, Card, Checkbox, Col, Form, Input, Row } from 'antd'
 import React from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, Redirect, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import RoutesWrapper from '../components/RoutesWrapper'
 import { PATH_REGISTER_USER, PATH_MAIN } from '../constants/routes'
 
 const { Item: FormItem } = Form
 
-const CardTitle = styled.span`
+export const CardTitle = styled.span`
   font-family: sans-serif;
   font-size: 16px;
   font-style: italic;
@@ -25,6 +25,7 @@ const Login = (): React.ReactElement => {
       window.location.search.substring(1).split('=')[1] || PATH_MAIN
     }`
     history.push(next)
+    return <Redirect to={next} />
   }
 
   return (
@@ -34,7 +35,7 @@ const Login = (): React.ReactElement => {
         className={'login-card-container'}
         align={'middle'}
       >
-        <Col xs={7} lg={5}>
+        <Col xs={24} sm={7} xxl={5}>
           <Card style={{ borderRadius: '8px' }}>
             <Form
               className="login-form"
@@ -43,7 +44,7 @@ const Login = (): React.ReactElement => {
             >
               <FormItem>
                 <Row justify={'center'}>
-                  <CardTitle>SHOP APP</CardTitle>
+                  <CardTitle>FAST SHOP</CardTitle>
                 </Row>
               </FormItem>
               <FormItem

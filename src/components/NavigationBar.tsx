@@ -1,4 +1,5 @@
 import {
+  HomeOutlined,
   LogoutOutlined,
   MenuUnfoldOutlined,
   ShoppingCartOutlined,
@@ -6,28 +7,29 @@ import {
   UserOutlined,
 } from '@ant-design/icons'
 import {
+  Badge,
+  Button,
   Col,
+  Dropdown,
+  Input,
   Menu,
   Row,
-  Input,
   Select,
   Tooltip,
-  Button,
-  Avatar,
-  Dropdown,
-  Badge,
 } from 'antd'
 import Search from 'antd/lib/input/Search'
 import { Header } from 'antd/lib/layout/layout'
 import React, { useEffect, useState } from 'react'
-import { Redirect, useHistory } from 'react-router-dom'
+import { Link, Redirect, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { isLoggedIn } from '../utils/session'
 import {
-  PATH_LOGIN,
   PATH_REGISTER_USER,
   PATH_SHOPPING_CART,
+  PATH_MAIN,
 } from '../constants/routes'
+import { useSelector } from 'react-redux'
+import { StoreState } from '../reducers'
 
 const { Group } = Input
 const { Option } = Select
@@ -51,6 +53,7 @@ const LogoContainer = styled.span`
   font-size: 16px;
   font-style: italic;
   letter-spacing: 10px;
+  cursor: pointer;
 `
 
 type MenuType = {
@@ -103,6 +106,9 @@ const menuAnonymousUSers: MenuType[] = [
 
 const NavigationBar: React.FC = (): React.ReactElement => {
   const [dropdownMenu, setDropdownMenu] = useState<MenuType[]>()
+  const { shoppingCartCounter } = useSelector(
+    (state: StoreState) => state.products
+  )
 
   const history = useHistory()
 
@@ -110,7 +116,7 @@ const NavigationBar: React.FC = (): React.ReactElement => {
     if (isLoggedIn()) {
       setDropdownMenu(menuSignedUSers)
     } else setDropdownMenu(menuAnonymousUSers)
-  }, [isLoggedIn])
+  }, [])
 
   const menu = (
     <Menu>
@@ -134,10 +140,14 @@ const NavigationBar: React.FC = (): React.ReactElement => {
         style={{ maxHeight: '64px' }}
       >
         <Col xs={12} md={8}>
-          <LogoContainer>SHOP APP</LogoContainer>
+          <LogoContainer>
+            <Link style={{ color: 'white' }} to={PATH_MAIN}>
+              FAST SHOP
+            </Link>
+          </LogoContainer>
         </Col>
         <Col xs={0} md={8}>
-          <Row align={'middle'}>
+          <Row align={'middle'} justify={'center'}>
             <Group compact>
               <Select defaultValue={1}>
                 <Option key={1} value={1}>
@@ -154,17 +164,35 @@ const NavigationBar: React.FC = (): React.ReactElement => {
         <Col xs={12} md={8} style={{ maxHeight: '64px' }}>
           <Row justify={'end'} align={'top'}>
             <Col xs={0} md={2}>
-              <Tooltip title={'Shopping cart'}>
-                <Badge count={5} offset={[-48, 30]}>
+              <Tooltip title={'Home'}>
+                <Link to={PATH_MAIN}>
                   <CustomButton
                     className={'button-menu'}
-                    icon={<ShoppingCartOutlined />}
-                    onClick={() => <Redirect to={PATH_SHOPPING_CART} />}
+                    icon={<HomeOutlined style={{ fontSize: '18px' }} />}
+                    onClick={() => <Redirect to={PATH_MAIN} />}
                     shape={'circle'}
                     size={'large'}
                     type={'link'}
                   />
-                </Badge>
+                </Link>
+              </Tooltip>
+            </Col>
+            <Col xs={0} md={2}>
+              <Tooltip title={'Shopping cart'}>
+                <Link to={PATH_SHOPPING_CART}>
+                  <Badge count={shoppingCartCounter} offset={[-48, 30]}>
+                    <CustomButton
+                      className={'button-menu'}
+                      icon={
+                        <ShoppingCartOutlined style={{ fontSize: '18px' }} />
+                      }
+                      onClick={() => <Redirect to={PATH_SHOPPING_CART} />}
+                      shape={'circle'}
+                      size={'large'}
+                      type={'link'}
+                    />
+                  </Badge>
+                </Link>
               </Tooltip>
             </Col>
             <Col xs={0} md={2}>
@@ -172,7 +200,7 @@ const NavigationBar: React.FC = (): React.ReactElement => {
                 <Dropdown overlay={menu} trigger={['click']}>
                   <CustomButton
                     className={'button-menu'}
-                    icon={<UserOutlined />}
+                    icon={<UserOutlined style={{ fontSize: '18px' }} />}
                     onClick={() => <Redirect to={PATH_REGISTER_USER} />}
                     shape={'circle'}
                     size={'large'}

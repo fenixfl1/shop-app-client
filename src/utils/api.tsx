@@ -28,6 +28,7 @@ export function postRequest<T>(
   return result
 }
 
+// eslint-disable-next-line
 function putRequest<T>(
   url: string,
   data: Record<string, unknown>
@@ -39,6 +40,7 @@ function putRequest<T>(
   return result
 }
 
+// eslint-disable-next-line
 function unauthorizedPostRequest<T>(
   url: string,
   data: T
