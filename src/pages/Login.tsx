@@ -29,7 +29,7 @@ const Login = (): React.ReactElement => {
   }
 
   return (
-    <RoutesWrapper>
+    <RoutesWrapper allowSearch={false}>
       <Row
         justify={'center'}
         className={'login-card-container'}

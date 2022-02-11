@@ -1,27 +1,33 @@
-import { UserOutlined, LockOutlined } from '@ant-design/icons'
-import {
-  Row,
-  Col,
-  Card,
-  Form,
-  Input,
-  Checkbox,
-  Button,
-  InputNumber,
-} from 'antd'
+import { Row, Col, Card, Form, Input, Button } from 'antd'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { RoutesWrapper } from '../components'
 import { validateMessages } from '../constants/general'
-import { PATH_REGISTER_USER, PATH_LOGIN } from '../constants/routes'
-import { defaultBreakpoints, formItemLayout } from '../themes'
+import { PATH_LOGIN } from '../constants/routes'
+import { formItemLayout } from '../themes'
 import { CardTitle } from './Login'
+import { useForm } from 'antd/lib/form/Form'
+import { useDispatch } from 'react-redux'
+import { createUser } from '../actions/user'
 
 const { Item: FormItem } = Form
 
 const RegisterUser = (): React.ReactElement => {
+  const dispatch = useDispatch()
+  const [form] = useForm()
+
+  const handleOnFinish = async () => {
+    try {
+      const data = await form.validateFields()
+
+      dispatch(createUser(data))
+    } catch (error) {
+      //
+    }
+  }
+
   return (
-    <RoutesWrapper>
+    <RoutesWrapper allowSearch={false}>
       <Row
         justify={'center'}
         className={'login-card-container'}
@@ -30,11 +36,12 @@ const RegisterUser = (): React.ReactElement => {
         <Col xs={24} sm={7}>
           <Card style={{ borderRadius: '8px' }}>
             <Form
-              autoComplete={'off'}
               {...formItemLayout}
+              autoComplete={'off'}
+              form={form}
+              layout={'vertical'}
               name="nest-messages"
               validateMessages={validateMessages}
-              layout={'vertical'}
             >
               <FormItem>
                 <Row justify={'center'}>
@@ -68,7 +75,7 @@ const RegisterUser = (): React.ReactElement => {
               <FormItem
                 name={'password'}
                 label="Password"
-                rules={[{ type: 'number', min: 0, max: 99 }]}
+                rules={[{ required: true }]}
               >
                 <Input.Password autoComplete={'off'} placeholder={'Password'} />
               </FormItem>
@@ -77,7 +84,11 @@ const RegisterUser = (): React.ReactElement => {
               </FormItem>
               <FormItem>
                 <Row justify={'end'}>
-                  <Button type={'primary'} style={{ width: '100%' }}>
+                  <Button
+                    type={'primary'}
+                    style={{ width: '100%' }}
+                    onClick={handleOnFinish}
+                  >
                     Sing up
                   </Button>
                 </Row>

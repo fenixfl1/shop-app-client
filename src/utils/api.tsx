@@ -1,6 +1,10 @@
 import axios, { AxiosResponse } from 'axios'
-import { WEB_SERVICE_API_PRODUCTS } from '../constants/routes'
+import {
+  WEB_SERVICE_API_PRODUCTS,
+  WEB_SERVICE_API_REGISTER_USER,
+} from '../constants/routes'
 import { getSessionToken } from './session'
+import { UserType } from '../reducers/user'
 
 type RequestHeaders = {
   headers: {
@@ -62,4 +66,12 @@ const getProducts = (): Promise<AxiosResponse> => {
 
 export const productsApiHelper = {
   getProducts,
+}
+
+const createUser = (payload: UserType): Promise<AxiosResponse> => {
+  return postRequest(WEB_SERVICE_API_REGISTER_USER, payload)
+}
+
+export const userApiHelper = {
+  createUser,
 }

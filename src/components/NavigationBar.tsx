@@ -11,13 +11,13 @@ import {
   Button,
   Col,
   Dropdown,
+  Image,
   Input,
   Menu,
   Row,
   Select,
   Tooltip,
 } from 'antd'
-import Search from 'antd/lib/input/Search'
 import { Header } from 'antd/lib/layout/layout'
 import React, { useEffect, useState } from 'react'
 import { Link, Redirect, useHistory } from 'react-router-dom'
@@ -104,7 +104,13 @@ const menuAnonymousUSers: MenuType[] = [
   },
 ]
 
-const NavigationBar: React.FC = (): React.ReactElement => {
+interface NavigationBarProps {
+  allowSearch: boolean
+}
+
+const NavigationBar: React.FC<NavigationBarProps> = ({
+  allowSearch,
+}): React.ReactElement => {
   const [dropdownMenu, setDropdownMenu] = useState<MenuType[]>()
   const { shoppingCartCounter } = useSelector(
     (state: StoreState) => state.products
@@ -133,34 +139,35 @@ const NavigationBar: React.FC = (): React.ReactElement => {
   )
 
   return (
-    <Header>
+    <Header
+      style={{
+        backgroundColor: '#364d79',
+        height: '80px',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: '100%',
+      }}
+    >
       <Row
         justify={'space-between'}
         align={'middle'}
-        style={{ maxHeight: '64px' }}
+        style={{ height: '80px' }}
       >
-        <Col xs={12} md={8}>
-          <LogoContainer>
-            <Link style={{ color: 'white' }} to={PATH_MAIN}>
-              FAST SHOP
-            </Link>
-          </LogoContainer>
+        <Col xs={8}>
+          <img width={50} src={'/logo.png'} />
         </Col>
-        <Col xs={0} md={8}>
-          <Row align={'middle'} justify={'center'}>
-            <Group compact>
-              <Select defaultValue={1}>
-                <Option key={1} value={1}>
-                  All
-                </Option>
-                <Option key={2} value={2}>
-                  Electronic
-                </Option>
-              </Select>
-              <Search placeholder={'Search'} style={{ width: '75%' }} />
-            </Group>
-          </Row>
-        </Col>
+        <Col xs={0} md={8} />
+        {!allowSearch && (
+          <Col xs={0} md={8}>
+            <Row align={'middle'} justify={'start'}>
+              <Input
+                // bordered={false}
+                placeholder={'Search'}
+                size={'large'}
+                style={{ borderRadius: '20px' }}
+              />
+            </Row>
+          </Col>
+        )}
         <Col xs={12} md={8} style={{ maxHeight: '64px' }}>
           <Row justify={'end'} align={'top'}>
             <Col xs={0} md={2}>
