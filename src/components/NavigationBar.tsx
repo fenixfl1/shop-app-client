@@ -2,6 +2,7 @@ import {
   HomeOutlined,
   LogoutOutlined,
   MenuUnfoldOutlined,
+  SearchOutlined,
   ShoppingCartOutlined,
   UserAddOutlined,
   UserOutlined,
@@ -15,7 +16,6 @@ import {
   Input,
   Menu,
   Row,
-  Select,
   Tooltip,
 } from 'antd'
 import { Header } from 'antd/lib/layout/layout'
@@ -31,8 +31,6 @@ import {
 import { useSelector } from 'react-redux'
 import { StoreState } from '../reducers'
 
-const { Group } = Input
-const { Option } = Select
 const { Item } = Menu
 
 const CustomButton = styled(Button)`
@@ -47,7 +45,7 @@ const CustomButton = styled(Button)`
   }
 `
 
-const LogoContainer = styled.span`
+export const LogoContainer = styled.span`
   color: white;
   font-family: sans-serif;
   font-size: 16px;
@@ -141,10 +139,8 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
   return (
     <Header
       style={{
-        backgroundColor: '#364d79',
+        backgroundColor: '#08979c`',
         height: '80px',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: '100%',
       }}
     >
       <Row
@@ -153,10 +149,16 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
         style={{ height: '80px' }}
       >
         <Col xs={8}>
-          <img width={50} src={'/logo.png'} />
+          <Link to={PATH_MAIN}>
+            <Image
+              preview={false}
+              alt={'logo'}
+              width={130}
+              src={'/logo2.png'}
+            />
+          </Link>
         </Col>
-        <Col xs={0} md={8} />
-        {!allowSearch && (
+        {allowSearch && (
           <Col xs={0} md={8}>
             <Row align={'middle'} justify={'start'}>
               <Input
@@ -164,6 +166,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
                 placeholder={'Search'}
                 size={'large'}
                 style={{ borderRadius: '20px' }}
+                suffix={<SearchOutlined />}
               />
             </Row>
           </Col>

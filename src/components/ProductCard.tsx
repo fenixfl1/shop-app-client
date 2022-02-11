@@ -38,17 +38,19 @@ const ProductCard: React.FC<ProductCardPros> = ({
   return (
     <Card
       hoverable
+      key={product.id}
       style={{
         marginTop: '30px',
         width: 280,
         minHeight: 350,
         maxHeight: 350,
+        borderRadius: '10px',
       }}
-      key={product.id}
       cover={
         <Image
           preview={false}
           width={280}
+          style={{ borderRadius: '10px 10px 0 0' }}
           src={
             'https://th.bing.com/th/id/OIP.gr8FMnXeCRpYcLD9X4vS6gHaE8?pid=ImgDet&rs=1'
           }
@@ -61,6 +63,7 @@ const ProductCard: React.FC<ProductCardPros> = ({
               <InputNumber
                 style={{ width: '18%' }}
                 defaultValue={1}
+                min={1}
                 className={'input-number-text-center'}
                 bordered={false}
                 size={'small'}

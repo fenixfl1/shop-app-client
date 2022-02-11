@@ -1,42 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getProducts, addToShoppingCart } from '../actions/products'
+import { getProducts } from '../actions/products'
 import { ProductCard, RoutesWrapper } from '../components'
 import { StoreState } from '../reducers'
-import {
-  Avatar,
-  Card,
-  Row,
-  Image,
-  Tooltip,
-  InputNumber,
-  Form,
-  Skeleton,
-  Col,
-  List,
-  Space,
-  Divider,
-  Carousel,
-  Button,
-  Modal,
-  Menu,
-} from 'antd'
-import {
-  LikeOutlined,
-  MessageOutlined,
-  ShoppingCartOutlined,
-  StarOutlined,
-} from '@ant-design/icons'
-import { useForm } from 'antd/lib/form/Form'
-import Sider from 'antd/lib/layout/Sider'
-import styled from 'styled-components'
+import { Row, Skeleton, Col, Carousel, Modal, Menu } from 'antd'
 import { ProductsType } from '../reducers/products'
-import { Link } from 'react-router-dom'
 
 const Home = (): React.ReactElement => {
   const dispatch = useDispatch()
-
-  const [selectedProduct, setSelectedProduct] = useState<ProductsType>()
   const [modalVisibilityState, setModalVisibilityState] = useState<boolean>()
   const { products, fetchingProducts } = useSelector(
     (state: StoreState) => state.products
@@ -77,7 +48,7 @@ const Home = (): React.ReactElement => {
                       color: '#fff',
                       lineHeight: '200px',
                       textAlign: 'center',
-                      background: '#364d79',
+                      background: '#00474f',
                     }}
                   >
                     {index + 1}
@@ -104,7 +75,17 @@ const Home = (): React.ReactElement => {
         onOk={handleModalState}
         onCancel={handleModalState}
       >
-        {selectedProduct?.name}
+        ... ...
+        <br />
+        ... ...
+        <br />
+        ... ...
+        <br />
+        ... ...
+        <br />
+        ... ...
+        <br />
+        ... ...
       </Modal>
     </>
   )

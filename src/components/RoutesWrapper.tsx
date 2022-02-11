@@ -2,22 +2,10 @@ import React from 'react'
 import { Redirect } from 'react-router-dom'
 import { PATH_LOGIN } from '../constants/routes'
 import { isLoggedIn } from '../utils/session'
-import { Layout, Menu, Row, Spin } from 'antd'
+import { Layout, Spin } from 'antd'
 import NavigationBar from './NavigationBar'
 import { useSelector } from 'react-redux'
 import { StoreState } from '../reducers'
-import Sider from 'antd/lib/layout/Sider'
-import {
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  BarChartOutlined,
-  CloudOutlined,
-  AppstoreOutlined,
-  TeamOutlined,
-  ShopOutlined,
-} from '@ant-design/icons'
-import { Header } from 'antd/lib/layout/layout'
 
 const { Content, Footer } = Layout
 
