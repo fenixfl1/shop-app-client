@@ -5,11 +5,15 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { CircleButton } from '.'
-import { addToShoppingCart } from '../actions/products'
+import {
+  addToShoppingCart,
+  setModalStateForProductDetail,
+} from '../actions/products'
 import { ProductsType } from '../reducers/products'
 
 interface ProductCardPros {
   product: ProductsType
+  onSelect?: (product: ProductsType) => void
 }
 
 type CounterType = {
@@ -21,6 +25,7 @@ const { Meta } = Card
 
 const ProductCard: React.FC<ProductCardPros> = ({
   product,
+  onSelect,
 }): React.ReactElement => {
   const [form] = useForm()
   const dispatch = useDispatch()
@@ -47,13 +52,14 @@ const ProductCard: React.FC<ProductCardPros> = ({
         borderRadius: '10px',
       }}
       cover={
-        <Image
-          preview={false}
-          width={280}
-          style={{ borderRadius: '10px 10px 0 0' }}
-          src={
-            'https://th.bing.com/th/id/OIP.gr8FMnXeCRpYcLD9X4vS6gHaE8?pid=ImgDet&rs=1'
-          }
+        <img
+          src={product.image}
+          style={{
+            borderRadius: '10px 10px 0 0',
+            width: '280px',
+            height: '175px',
+            objectFit: 'contain',
+          }}
         />
       }
       actions={[
@@ -85,9 +91,25 @@ const ProductCard: React.FC<ProductCardPros> = ({
       ]}
     >
       <Meta
-        description={product.description}
+        description={
+          <span
+            style={{
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+              // overflow: 'hidden',
+            }}
+          >
+            {product.description}
+          </span>
+        }
         title={
-          <Link to={`#product_detail/${product.id}/${product.name}`}>
+          <Link
+            to={`#product_detail/${product.id}/${product.name}`}
+            onClick={() => {
+              if (typeof onSelect === 'function') onSelect(product)
+              dispatch(setModalStateForProductDetail(true))
+            }}
+          >
             {product.name}
           </Link>
         }

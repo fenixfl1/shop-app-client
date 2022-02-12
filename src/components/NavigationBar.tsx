@@ -154,7 +154,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
               preview={false}
               alt={'logo'}
               width={130}
-              src={'/logo2.png'}
+              src={'/assets/logo.png'}
             />
           </Link>
         </Col>

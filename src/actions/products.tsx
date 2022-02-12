@@ -4,8 +4,13 @@ import {
   PRODUCTS_GET_PRODUCTS_LIST_FAILURE,
   ADD_PRODUCT_TO_SHOPPING_CART,
   REMOVE_PRODUCT_FROM_SHOPPING_CART,
+  GET_PRODUCT_CATEGORIES,
+  GET_PRODUCT_CATEGORIES_FAILURE,
+  GET_PRODUCT_CATEGORIES_SUCCESS,
+  SET_MODAL_VISIBILITY_STATE_FOR_PRODUCT_DETAIL,
+  SET_PRODUCT_DETAILS,
 } from '../constants/actions'
-import { ProductsType } from '../reducers/products'
+import { CategoryType, ProductsType } from '../reducers/products'
 
 // GET PRODUCTS ACTIONS
 export type GetProductsAction = {
@@ -71,9 +76,80 @@ export const removeProductFromShippingCart = (
   }
 }
 
+// GET CATEGORIES ACTIONS
+export type GetProductCategoryAction = {
+  type: typeof GET_PRODUCT_CATEGORIES
+}
+
+export type GetProductCategorySuccessAction = {
+  type: typeof GET_PRODUCT_CATEGORIES_SUCCESS
+  categories: CategoryType[]
+}
+
+export type GetProductCategoryFailureAction = {
+  type: typeof GET_PRODUCT_CATEGORIES_FAILURE
+}
+
+export const getProductCategory = (): GetProductCategoryAction => {
+  return {
+    type: GET_PRODUCT_CATEGORIES,
+  }
+}
+
+export const getProductCategorySuccess = (
+  categories: CategoryType[]
+): GetProductCategorySuccessAction => {
+  return {
+    type: GET_PRODUCT_CATEGORIES_SUCCESS,
+    categories,
+  }
+}
+
+export const getProductCategoryFailure =
+  (): GetProductCategoryFailureAction => {
+    return {
+      type: GET_PRODUCT_CATEGORIES_FAILURE,
+    }
+  }
+
+// MODAL SATE FOR PRODUCTS ACTION
+export type ModalStateForPRoductDetailAction = {
+  type: typeof SET_MODAL_VISIBILITY_STATE_FOR_PRODUCT_DETAIL
+  state: boolean
+}
+
+export const setModalStateForProductDetail = (
+  state: boolean
+): ModalStateForPRoductDetailAction => {
+  return {
+    type: SET_MODAL_VISIBILITY_STATE_FOR_PRODUCT_DETAIL,
+    state,
+  }
+}
+
+// SET PRODUCT DETAIL ACTION
+export type SetProductDetailAction = {
+  type: typeof SET_PRODUCT_DETAILS
+  details: ProductsType
+}
+
+export const setProductDetails = (
+  details: ProductsType
+): SetProductDetailAction => {
+  return {
+    type: SET_PRODUCT_DETAILS,
+    details,
+  }
+}
+
 export type ProductsActions =
   | GetProductsAction
   | GetProductsSuccessAction
   | GetProductsFailureAction
   | AddToShoppingCArtAction
   | RemoveProductFromShoppingCArtAction
+  | GetProductCategoryAction
+  | GetProductCategorySuccessAction
+  | GetProductCategoryFailureAction
+  | ModalStateForPRoductDetailAction
+  | SetProductDetailAction

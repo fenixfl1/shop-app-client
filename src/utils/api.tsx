@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import {
+  WEB_SERVICE_API_GET_CATEGORIES,
   WEB_SERVICE_API_PRODUCTS,
   WEB_SERVICE_API_REGISTER_USER,
 } from '../constants/routes'
@@ -64,7 +65,12 @@ const getProducts = (): Promise<AxiosResponse> => {
   return getRequest(`${WEB_SERVICE_API_PRODUCTS}`)
 }
 
+const getCategories = (): Promise<AxiosResponse> => {
+  return getRequest(WEB_SERVICE_API_GET_CATEGORIES)
+}
+
 export const productsApiHelper = {
+  getCategories,
   getProducts,
 }
 

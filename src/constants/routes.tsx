@@ -5,6 +5,7 @@ export const WEB_SERVICE_API_REGISTER_USER = `${WEB_SERVICE_API}/users`
 export const WEB_SERVICE_API_REGISTER_ADDRESS = `${WEB_SERVICE_API}/register/address`
 export const WEB_SERVICE_API_PRODUCTS = `${WEB_SERVICE_API}/products`
 export const WEB_SERVICE_API_SHOPPING_CART = `${WEB_SERVICE_API}/shopping_cart`
+export const WEB_SERVICE_API_GET_CATEGORIES = `${WEB_SERVICE_API}/categories`
 
 // EXTERNALS ROUTES
 export const PATH_MAIN = '/'
