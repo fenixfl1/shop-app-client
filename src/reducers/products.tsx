@@ -123,13 +123,13 @@ const products = (
 
         return {
           ...state,
-          shoppingCart: new Array(...newShoppingCart),
+          shoppingCart: [...newShoppingCart],
           shoppingCartCounter: total,
         }
       }
       return {
         ...state,
-        shoppingCart: new Array(...state.shoppingCart, action.product),
+        shoppingCart: [...state.shoppingCart, action.product],
         shoppingCartCounter: state.shoppingCartCounter + action.product.count,
       }
     }

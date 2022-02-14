@@ -1,5 +1,5 @@
 import { ShoppingCartOutlined } from '@ant-design/icons'
-import { Card, Form, InputNumber, Tooltip, Image, Row } from 'antd'
+import { Card, Form, InputNumber, Tooltip, Row } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'

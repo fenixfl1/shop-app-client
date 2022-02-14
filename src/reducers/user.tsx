@@ -9,6 +9,18 @@ import {
   GET_USER_INFO,
   GET_USER_INFO_FAILURE,
   GET_USER_INFO_SUCCESS,
+  CREATE_PAYMENT_METHOD,
+  CREATE_PAYMENT_METHOD_FAILURE,
+  CREATE_PAYMENT_METHOD_SUCCESS,
+  GET_PAYMENT_METHODS,
+  GET_PAYMENT_METHODS_FAILURE,
+  GET_PAYMENT_METHODS_SUCCESS,
+  CREATE_ADDRESS,
+  CREATE_ADDRESS_FAILURE,
+  CREATE_ADDRESS_SUCCESS,
+  GET_ADDRESSES,
+  GET_ADDRESSES_FAILURE,
+  GET_ADDRESSES_SUCCESS,
 } from '../constants/actions'
 
 export type UserType = {
@@ -16,6 +28,7 @@ export type UserType = {
   id_category?: number
   id?: number
   last_name?: string
+  lastname?: string
   name?: string
   password?: string
   status?: boolean
@@ -26,11 +39,15 @@ export type UserState = {
   user: UserType
   fetchingUserData: boolean
   isLoggedIn: boolean
+  paymentMethods: any
+  addresses: any
 }
 
 const initialState: UserState = {
   fetchingUserData: false,
   isLoggedIn: false,
+  paymentMethods: [],
+  addresses: [],
   user: {},
 }
 
@@ -90,6 +107,82 @@ const user = (state = initialState, action: UserActions): UserState => {
       }
     }
     case GET_USER_INFO_FAILURE: {
+      return {
+        ...state,
+        fetchingUserData: false,
+      }
+    }
+    case CREATE_PAYMENT_METHOD: {
+      return {
+        ...state,
+        fetchingUserData: true,
+      }
+    }
+    case CREATE_PAYMENT_METHOD_SUCCESS: {
+      return {
+        ...state,
+        fetchingUserData: false,
+        paymentMethods: [action.newPayment],
+      }
+    }
+    case CREATE_PAYMENT_METHOD_FAILURE: {
+      return {
+        ...state,
+        fetchingUserData: false,
+      }
+    }
+    case GET_PAYMENT_METHODS: {
+      return {
+        ...state,
+        fetchingUserData: true,
+      }
+    }
+    case GET_PAYMENT_METHODS_SUCCESS: {
+      return {
+        ...state,
+        fetchingUserData: false,
+        paymentMethods: action.payments,
+      }
+    }
+    case GET_PAYMENT_METHODS_FAILURE: {
+      return {
+        ...state,
+        fetchingUserData: false,
+      }
+    }
+    case CREATE_ADDRESS: {
+      return {
+        ...state,
+        fetchingUserData: true,
+      }
+    }
+    case CREATE_ADDRESS_SUCCESS: {
+      return {
+        ...state,
+        fetchingUserData: false,
+        addresses: [action.newAddress],
+      }
+    }
+    case CREATE_ADDRESS_FAILURE: {
+      return {
+        ...state,
+        fetchingUserData: false,
+      }
+    }
+    case GET_ADDRESSES: {
+      return {
+        ...state,
+        fetchingUserData: true,
+      }
+    }
+    case GET_ADDRESSES_SUCCESS: {
+      return {
+        ...state,
+        fetchingUserData: false,
+        addresses: action.addresses,
+      }
+    }
+    case GET_ADDRESSES_FAILURE: {
       return {
         ...state,
         fetchingUserData: false,

@@ -7,6 +7,9 @@ import RoutesWrapper from '../components/RoutesWrapper'
 import { StoreState } from '../reducers'
 import { ProductsType } from '../reducers/products'
 import { DollarTwoTone } from '@ant-design/icons'
+import { isLoggedIn } from '../utils/session'
+import { Redirect } from 'react-router-dom'
+import { PATH_LOGIN } from '../constants/routes'
 
 const ShoppingCart = (): React.ReactElement => {
   const dispatch = useDispatch()
@@ -14,6 +17,16 @@ const ShoppingCart = (): React.ReactElement => {
 
   const handleRemove = (record: ProductsType) => {
     dispatch(removeProductFromShippingCart(record.id))
+  }
+
+  const handleCheckout = () => {
+    if (!isLoggedIn()) {
+      return (
+        <Redirect
+          to={`${PATH_LOGIN}?next=${window.location.pathname.replace('/', '')}`}
+        />
+      )
+    }
   }
 
   const columns: ColumnType<ProductsType>[] = [
@@ -99,6 +112,7 @@ const ShoppingCart = (): React.ReactElement => {
                           shape={'round'}
                           type={'link'}
                           icon={<DollarTwoTone style={{ fontSize: '16px' }} />}
+                          onClick={handleCheckout}
                         >
                           Checkout
                         </Button>

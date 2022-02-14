@@ -5,6 +5,8 @@ import {
   WEB_SERVICE_API_PRODUCTS,
   WEB_SERVICE_API_REGISTER_USER,
   WEB_SERVICE_API_GET_USER,
+  WEB_SERVICE_API_PAYMENT_METHODS,
+  WEB_SERVICE_API_REGISTER_ADDRESS,
 } from '../constants/routes'
 import { getSessionToken } from './session'
 import { UserType } from '../reducers/user'
@@ -98,8 +100,28 @@ const getUserInfo = (id: React.Key): Promise<AxiosResponse> => {
   return getRequest(`${WEB_SERVICE_API_GET_USER}/${id}`)
 }
 
+const getAddresses = (userId: React.Key): Promise<AxiosResponse> => {
+  return getRequest(`${WEB_SERVICE_API_REGISTER_ADDRESS}/${userId}`)
+}
+
+const createAddress = (payload: any): Promise<AxiosResponse> => {
+  return postRequest(WEB_SERVICE_API_REGISTER_ADDRESS, payload)
+}
+
+const getPaymentMethods = (userId: React.Key): Promise<AxiosResponse> => {
+  return getRequest(`${WEB_SERVICE_API_PAYMENT_METHODS}/${userId}`)
+}
+
+const createPaymentMethod = (payload: any): Promise<AxiosResponse> => {
+  return postRequest(WEB_SERVICE_API_PAYMENT_METHODS, payload)
+}
+
 export const userApiHelper = {
   authenticateUser,
   createUser,
   getUserInfo,
+  getAddresses,
+  createAddress,
+  getPaymentMethods,
+  createPaymentMethod,
 }

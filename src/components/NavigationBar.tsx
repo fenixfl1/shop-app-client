@@ -74,7 +74,7 @@ const menuSignedUSers: MenuType[] = [
     key: '3',
     desc: 'Logout',
     icon: <LogoutOutlined />,
-    path: '/logout',
+    path: PATH_MAIN,
     action: () => removeSession(),
   },
 ]
