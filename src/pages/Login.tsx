@@ -1,10 +1,18 @@
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
-import { Button, Card, Checkbox, Col, Form, Input, Row } from 'antd'
-import React from 'react'
+import { Button, Card, Checkbox, Col, Form, Image, Input, Row } from 'antd'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, Redirect, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import RoutesWrapper from '../components/RoutesWrapper'
-import { PATH_REGISTER_USER, PATH_MAIN } from '../constants/routes'
+import { authenticateUser } from '../actions/user'
+import {
+  PATH_REGISTER_USER,
+  PATH_MAIN,
+  PATH_LOGO_WITHOUT_TEXT_BLACK,
+} from '../constants/routes'
+import { isLoggedIn } from '../utils/session'
+import { StoreState } from '../reducers'
 
 const { Item: FormItem } = Form
 
@@ -18,14 +26,17 @@ export const CardTitle = styled.span`
 `
 
 const Login = (): React.ReactElement => {
-  const history = useHistory()
+  const dispatch = useDispatch()
+  const { isLoggedIn: inSession } = useSelector(
+    (state: StoreState) => state.user
+  )
 
-  const onFinish = () => {
-    const next = `/${
-      window.location.search.substring(1).split('=')[1] || PATH_MAIN
-    }`
-    history.push(next)
-    return <Redirect to={next} />
+  useEffect(() => {
+    inSession && window.location.reload()
+  }, [inSession])
+
+  if (isLoggedIn()) {
+    return <Redirect to={PATH_MAIN} />
   }
 
   return (
@@ -35,16 +46,24 @@ const Login = (): React.ReactElement => {
         className={'login-card-container'}
         align={'middle'}
       >
-        <Col xs={24} sm={7} xxl={5}>
+        <Col xs={24} sm={8} xxl={6} style={{ margin: '20px 0px' }}>
           <Card style={{ borderRadius: '8px' }}>
             <Form
+              autoComplete={'off'}
               className="login-form"
               initialValues={{ remember: true }}
-              onFinish={onFinish}
+              onFinish={({ username, password }) => {
+                dispatch(authenticateUser(username, password))
+              }}
             >
               <FormItem>
                 <Row justify={'center'}>
-                  <CardTitle>FAST SHOP</CardTitle>
+                  <Image
+                    preview={false}
+                    width={'5rem'}
+                    src={PATH_LOGO_WITHOUT_TEXT_BLACK}
+                    alt={'Logo'}
+                  />
                 </Row>
               </FormItem>
               <FormItem
@@ -54,6 +73,7 @@ const Login = (): React.ReactElement => {
                 ]}
               >
                 <Input
+                  autoComplete={'off'}
                   prefix={<UserOutlined className="site-form-item-icon" />}
                   placeholder="Username"
                 />

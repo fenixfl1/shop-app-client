@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
+  addToShoppingCart,
   getProductCategory,
   getProducts,
   setModalStateForProductDetail,
@@ -8,7 +9,18 @@ import {
 } from '../actions/products'
 import { ProductCard, RoutesWrapper } from '../components'
 import { StoreState } from '../reducers'
-import { Row, Skeleton, Col, Carousel, Modal, Menu, Button, Space } from 'antd'
+import {
+  Button,
+  Carousel,
+  Col,
+  Image,
+  Menu,
+  Modal,
+  notification,
+  Row,
+  Skeleton,
+  Space,
+} from 'antd'
 import { ProductsType } from '../reducers/products'
 import { Link } from 'react-router-dom'
 import { DollarTwoTone, ShoppingCartOutlined } from '@ant-design/icons'
@@ -31,6 +43,10 @@ const Home = (): React.ReactElement => {
     dispatch(getProducts())
   }, [dispatch])
 
+  useEffect(() => {
+    !modalStateForProductDetail && dispatch(setProductDetails({}))
+  }, [modalStateForProductDetail])
+
   const handleModalState = () => {
     dispatch(setModalStateForProductDetail(!modalStateForProductDetail))
   }
@@ -39,22 +55,41 @@ const Home = (): React.ReactElement => {
     dispatch(setProductDetails(product))
   }
 
+  const handleAddToCart = () => {
+    handleModalState()
+    dispatch(
+      addToShoppingCart({
+        ...productDetail,
+        count: 1,
+      })
+    )
+    notification.success({
+      icon: (
+        <ShoppingCartOutlined style={{ fontSize: '16px', color: '#52c41a' }} />
+      ),
+      message: 'Success',
+      description: 'Product added successfully',
+    })
+  }
+
   const modalFooter = (
     <Row justify={'end'}>
       <Space>
         <Button
-          shape={'round'}
-          type={'primary'}
-          icon={<DollarTwoTone style={{ fontSize: '16px' }} />}
-        >
-          Checkout
-        </Button>
-        <Button
+          icon={<ShoppingCartOutlined style={{ fontSize: '16px' }} />}
+          onClick={handleAddToCart}
           shape={'round'}
           type={'default'}
-          icon={<ShoppingCartOutlined style={{ fontSize: '16px' }} />}
         >
           Add to cart
+        </Button>
+        <Button
+          icon={<DollarTwoTone style={{ fontSize: '16px' }} />}
+          onClick={handleAddToCart}
+          shape={'round'}
+          type={'primary'}
+        >
+          Checkout
         </Button>
       </Space>
     </Row>
@@ -89,10 +124,16 @@ const Home = (): React.ReactElement => {
                 ?.map((item, index) => (
                   <div className={'img-carousel-container'}>
                     <img key={index} src={item.image} alt={item.name} />
-                    <Link to={`#/detail/${item.name}`}>
+                    <Link
+                      to={`#/detail/${item.name}`}
+                      onClick={() => {
+                        handleSetProductDetail(item)
+                        handleModalState()
+                      }}
+                    >
                       <h2>{item.name}</h2>
                     </Link>
-                    <h3>{`%${item.discount} off for today`}</h3>
+                    <span>{`%${item.discount} off`}</span>
                   </div>
                 ))}
             </Carousel>
@@ -102,7 +143,7 @@ const Home = (): React.ReactElement => {
             <Skeleton loading={fetchingProducts} active>
               <Row justify={'space-between'}>
                 {products
-                  .filter((item) => item.status === true)
+                  .filter((item) => item.status === true && item.discount < 1.0)
                   .map((item) => (
                     <ProductCard
                       onSelect={handleSetProductDetail}
@@ -116,27 +157,33 @@ const Home = (): React.ReactElement => {
       </RoutesWrapper>
 
       <Modal
-        visible={modalStateForProductDetail}
-        onCancel={handleModalState}
-        footer={modalFooter}
         centered
+        footer={modalFooter}
+        onCancel={handleModalState}
+        visible={modalStateForProductDetail}
       >
         <Row justify={'center'} style={{ height: '500px' }}>
           <Col xs={24}>
-            <img
-              src={'/assets/products/samsung-s10-plus.jpg'}
-              alt={'samsung-s10-plus'}
-              style={{ width: '100%' }}
+            <Image
+              alt={productDetail.name}
+              src={productDetail.image}
+              width={'100%'}
             />
           </Col>
           <Col xs={24}>
-            <h2 style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <h3 style={{ width: '100%' }}>{productDetail.name} </h3>
+            <Row justify={'start'}>
+              <h2 style={{ width: '100%' }}>{productDetail.name}</h2>
               <span style={{ width: '100%', textAlign: 'start' }}>
-                $US {productDetail.price}
+                <strong>
+                  USD $
+                  {String(productDetail.price).replace(
+                    /\B(?=(\d{3})+(?!\d)\.?)/g,
+                    ','
+                  )}
+                </strong>
               </span>
-            </h2>
-            <span>{productDetail.description}</span>
+              <span style={{ fontSize: 14 }}>{productDetail.description}</span>
+            </Row>
           </Col>
         </Row>
       </Modal>

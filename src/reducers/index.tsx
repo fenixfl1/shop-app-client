@@ -1,10 +1,10 @@
 import products, { ProductsState } from './products'
 import { combineReducers } from 'redux'
-import user, { UserType } from './user'
+import user, { UserState } from './user'
 
 export type StoreState = {
   products: ProductsState
-  user: UserType
+  user: UserState
 }
 
 export default combineReducers({ products, user })

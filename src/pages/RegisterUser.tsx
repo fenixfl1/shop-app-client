@@ -1,11 +1,10 @@
-import { Row, Col, Card, Form, Input, Button } from 'antd'
+import { Row, Col, Card, Form, Input, Button, Image, message } from 'antd'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { RoutesWrapper } from '../components'
 import { validateMessages } from '../constants/general'
-import { PATH_LOGIN } from '../constants/routes'
+import { PATH_LOGIN, PATH_LOGO_WITHOUT_TEXT_BLACK } from '../constants/routes'
 import { formItemLayout } from '../themes'
-import { CardTitle } from './Login'
 import { useForm } from 'antd/lib/form/Form'
 import { useDispatch } from 'react-redux'
 import { createUser } from '../actions/user'
@@ -19,10 +18,17 @@ const RegisterUser = (): React.ReactElement => {
   const handleOnFinish = async () => {
     try {
       const data = await form.validateFields()
+      data.status = true
 
       dispatch(createUser(data))
     } catch (error) {
-      //
+      message.success({
+        content: 'Something is wrong in the form',
+        className: 'custom-class',
+        style: {
+          marginTop: '20vh',
+        },
+      })
     }
   }
 
@@ -33,54 +39,45 @@ const RegisterUser = (): React.ReactElement => {
         className={'login-card-container'}
         align={'middle'}
       >
-        <Col xs={24} sm={7}>
+        <Col xs={24} md={10} xxl={6}>
           <Card style={{ borderRadius: '8px' }}>
             <Form
               {...formItemLayout}
               autoComplete={'off'}
               form={form}
-              layout={'vertical'}
               name="nest-messages"
               validateMessages={validateMessages}
             >
               <FormItem>
                 <Row justify={'center'}>
-                  <CardTitle>FAST SHOP</CardTitle>
+                  <Image
+                    preview={false}
+                    width={'5rem'}
+                    src={PATH_LOGO_WITHOUT_TEXT_BLACK}
+                    alt={'Logo'}
+                  />
                 </Row>
               </FormItem>
 
-              <FormItem
-                name={'name'}
-                label={'Name'}
-                rules={[{ required: true }]}
-              >
+              <FormItem name={'name'} rules={[{ required: true }]}>
                 <Input placeholder={'Name'} />
               </FormItem>
 
-              <FormItem
-                name={'last_name'}
-                label={'Last Name'}
-                rules={[{ required: true }]}
-              >
-                <Input placeholder={'Last NAme'} />
+              <FormItem name={'last_name'} rules={[{ required: true }]}>
+                <Input placeholder={'Last Name'} />
+              </FormItem>
+              <FormItem name={'username'} rules={[{ required: true }]}>
+                <Input placeholder={'Last Name'} />
               </FormItem>
 
               <FormItem
                 name={'email'}
-                label={'Email'}
                 rules={[{ type: 'email', required: true }]}
               >
                 <Input placeholder={'user@example.com'} />
               </FormItem>
-              <FormItem
-                name={'password'}
-                label="Password"
-                rules={[{ required: true }]}
-              >
+              <FormItem name={'password'} rules={[{ required: true }]}>
                 <Input.Password autoComplete={'off'} placeholder={'Password'} />
-              </FormItem>
-              <FormItem name={'repeat_password'} label="Repeat Password">
-                <Input.Password placeholder={'Password'} />
               </FormItem>
               <FormItem>
                 <Row justify={'end'}>

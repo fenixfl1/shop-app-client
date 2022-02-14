@@ -89,17 +89,48 @@ const products = (
       }
     }
     case REMOVE_PRODUCT_FROM_SHOPPING_CART: {
+      const newShoppingCart = state.shoppingCart.filter(
+        (item) => item.id !== action.key
+      )
+      let total = 0
+
+      newShoppingCart.forEach((item) => (total += item.count))
       return {
         ...state,
-        shoppingCart: new Array(
-          ...state.shoppingCart.filter((item) => item.id !== action.key)
-        ),
+        shoppingCart: new Array(...newShoppingCart),
+        shoppingCartCounter: total,
       }
     }
     case ADD_PRODUCT_TO_SHOPPING_CART: {
+      const newShoppingCart = [...state.shoppingCart]
+      const newProduct = action.product
+      const index = newShoppingCart.findIndex(
+        (item) => item.id === action.product.id
+      )
+
+      if (index > -1) {
+        const item = newShoppingCart[index]
+        newProduct.count = newProduct.count + item.count
+
+        newShoppingCart.splice(index, 1, {
+          ...item,
+          ...newProduct,
+        })
+
+        let total = 0
+
+        newShoppingCart.forEach((item) => (total += item.count))
+
+        return {
+          ...state,
+          shoppingCart: new Array(...newShoppingCart),
+          shoppingCartCounter: total,
+        }
+      }
       return {
         ...state,
-        shoppingCart: Object.assign([], [action.product], state.shoppingCart),
+        shoppingCart: new Array(...state.shoppingCart, action.product),
+        shoppingCartCounter: state.shoppingCartCounter + action.product.count,
       }
     }
     case GET_PRODUCT_CATEGORIES: {

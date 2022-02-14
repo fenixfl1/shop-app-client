@@ -1,8 +1,10 @@
 import axios, { AxiosResponse } from 'axios'
 import {
   WEB_SERVICE_API_GET_CATEGORIES,
+  WEB_SERVICE_API_LOGIN,
   WEB_SERVICE_API_PRODUCTS,
   WEB_SERVICE_API_REGISTER_USER,
+  WEB_SERVICE_API_GET_USER,
 } from '../constants/routes'
 import { getSessionToken } from './session'
 import { UserType } from '../reducers/user'
@@ -78,6 +80,26 @@ const createUser = (payload: UserType): Promise<AxiosResponse> => {
   return postRequest(WEB_SERVICE_API_REGISTER_USER, payload)
 }
 
+export type authenticateUserPayload = {
+  username: string
+  password: string
+}
+
+const authenticateUser = (
+  data: authenticateUserPayload
+): Promise<AxiosResponse<authenticateUserPayload>> => {
+  return unauthorizedPostRequest<authenticateUserPayload>(
+    WEB_SERVICE_API_LOGIN,
+    data
+  )
+}
+
+const getUserInfo = (id: React.Key): Promise<AxiosResponse> => {
+  return getRequest(`${WEB_SERVICE_API_GET_USER}/${id}`)
+}
+
 export const userApiHelper = {
+  authenticateUser,
   createUser,
+  getUserInfo,
 }

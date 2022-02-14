@@ -15,7 +15,7 @@ export const isLoggedIn = (): boolean => {
 
 export type UserData = {
   username: string
-  userId: string
+  id: string
   sessionCookie: {
     token: string
     expiration: string
@@ -23,12 +23,12 @@ export type UserData = {
 }
 
 export const createSession = (user: UserData): void => {
-  const { username, sessionCookie, userId } = user
+  const { sessionCookie, id, username } = user
   const { token: sessionToken, expiration: sessionExpiration } = sessionCookie
   const cookiesExpiration = new Date(sessionExpiration)
   const sessionInfo = JSON.stringify({
     username,
-    userId,
+    id,
   })
 
   Cookies.set(COOKIE_KEY_USER_NAME, username, {

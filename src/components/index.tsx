@@ -1,6 +1,7 @@
 import CircleButton from './CircleButton'
 import NavigationBar from './NavigationBar'
+import PaymentForm from './PaymentForm'
 import ProductCard from './ProductCard'
 import RoutesWrapper from './RoutesWrapper'
 
-export { CircleButton, NavigationBar, ProductCard, RoutesWrapper }
+export { CircleButton, NavigationBar, ProductCard, RoutesWrapper, PaymentForm }

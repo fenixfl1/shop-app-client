@@ -19,17 +19,18 @@ import {
   Tooltip,
 } from 'antd'
 import { Header } from 'antd/lib/layout/layout'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Link, Redirect, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
-import { isLoggedIn } from '../utils/session'
+import { isLoggedIn, removeSession } from '../utils/session'
 import {
   PATH_REGISTER_USER,
   PATH_SHOPPING_CART,
   PATH_MAIN,
 } from '../constants/routes'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { StoreState } from '../reducers'
+import { Dispatch } from 'redux'
 
 const { Item } = Menu
 
@@ -59,6 +60,7 @@ type MenuType = {
   icon: React.ReactNode
   key: string
   path: string
+  action?: (dispatch?: Dispatch<any>) => void
 }
 
 const menuSignedUSers: MenuType[] = [
@@ -69,18 +71,14 @@ const menuSignedUSers: MenuType[] = [
     path: '/account',
   },
   {
-    key: '2',
-    desc: 'Shopping Cart',
-    icon: <ShoppingCartOutlined />,
-    path: '/shopping_cart',
-  },
-  {
     key: '3',
     desc: 'Logout',
     icon: <LogoutOutlined />,
     path: '/logout',
+    action: () => removeSession(),
   },
 ]
+
 const menuAnonymousUSers: MenuType[] = [
   {
     key: '1',
@@ -94,12 +92,6 @@ const menuAnonymousUSers: MenuType[] = [
     icon: <UserAddOutlined />,
     path: '/signup',
   },
-  {
-    key: '2',
-    desc: 'Shopping Cart',
-    icon: <ShoppingCartOutlined />,
-    path: '/shopping_cart',
-  },
 ]
 
 interface NavigationBarProps {
@@ -109,32 +101,35 @@ interface NavigationBarProps {
 const NavigationBar: React.FC<NavigationBarProps> = ({
   allowSearch,
 }): React.ReactElement => {
-  const [dropdownMenu, setDropdownMenu] = useState<MenuType[]>()
+  const history = useHistory()
+  const dispatch = useDispatch()
   const { shoppingCartCounter } = useSelector(
     (state: StoreState) => state.products
   )
 
-  const history = useHistory()
-
-  useEffect(() => {
-    if (isLoggedIn()) {
-      setDropdownMenu(menuSignedUSers)
-    } else setDropdownMenu(menuAnonymousUSers)
-  }, [])
-
-  const menu = (
-    <Menu>
-      {dropdownMenu?.map((item, index) => (
-        <Item
-          key={index}
-          icon={item.icon}
-          onClick={() => history.push(item.path)}
-        >
-          {item.desc}
-        </Item>
-      ))}
-    </Menu>
-  )
+  const menu = () => {
+    const dropdownMenu = isLoggedIn() ? menuSignedUSers : menuAnonymousUSers
+    return (
+      <Menu>
+        {dropdownMenu?.map((item, index) => (
+          <Item
+            key={index}
+            icon={item.icon}
+            onClick={() => {
+              if (typeof item.action === 'function') {
+                item.action(dispatch)
+                history.push(item.path)
+              } else {
+                history.push(item.path)
+              }
+            }}
+          >
+            {item.desc}
+          </Item>
+        ))}
+      </Menu>
+    )
+  }
 
   return (
     <Header
@@ -162,7 +157,6 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
           <Col xs={0} md={8}>
             <Row align={'middle'} justify={'start'}>
               <Input
-                // bordered={false}
                 placeholder={'Search'}
                 size={'large'}
                 style={{ borderRadius: '20px' }}
@@ -190,7 +184,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
             <Col xs={0} md={2}>
               <Tooltip title={'Shopping cart'}>
                 <Link to={PATH_SHOPPING_CART}>
-                  <Badge count={shoppingCartCounter} offset={[-48, 30]}>
+                  <Badge count={shoppingCartCounter} offset={[-20, 5]}>
                     <CustomButton
                       className={'button-menu'}
                       icon={

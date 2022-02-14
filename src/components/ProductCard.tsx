@@ -32,6 +32,7 @@ const ProductCard: React.FC<ProductCardPros> = ({
   const [counter, setCounter] = useState<CounterType>()
 
   const handleAddToCart = () => {
+    form.resetFields([`${product.name}-${product.id}`])
     dispatch(
       addToShoppingCart({
         ...product,
@@ -47,8 +48,8 @@ const ProductCard: React.FC<ProductCardPros> = ({
       style={{
         marginTop: '30px',
         width: 280,
-        minHeight: 350,
-        maxHeight: 350,
+        minHeight: 380,
+        maxHeight: 380,
         borderRadius: '10px',
       }}
       cover={
@@ -64,8 +65,12 @@ const ProductCard: React.FC<ProductCardPros> = ({
       }
       actions={[
         <Form form={form}>
-          <Row justify={'center'}>
-            <Form.Item initialValue={1} noStyle>
+          <Row justify={'center'} align={'middle'}>
+            <Form.Item
+              initialValue={1}
+              noStyle
+              name={`${product.name}-${product.id}`}
+            >
               <InputNumber
                 style={{ width: '18%' }}
                 defaultValue={1}
@@ -80,7 +85,7 @@ const ProductCard: React.FC<ProductCardPros> = ({
             <Form.Item initialValue={1} noStyle>
               <Tooltip title={'Add to shopping cart'}>
                 <CircleButton
-                  style={{ color: '#333', paddingBottom: 5, margin: 0 }}
+                  style={{ color: '#333', margin: '5px 0 0 2px' }}
                   onClick={handleAddToCart}
                   icon={<ShoppingCartOutlined />}
                 />
@@ -96,22 +101,28 @@ const ProductCard: React.FC<ProductCardPros> = ({
             style={{
               whiteSpace: 'nowrap',
               textOverflow: 'ellipsis',
-              // overflow: 'hidden',
             }}
           >
             {product.description}
           </span>
         }
         title={
-          <Link
-            to={`#product_detail/${product.id}/${product.name}`}
-            onClick={() => {
-              if (typeof onSelect === 'function') onSelect(product)
-              dispatch(setModalStateForProductDetail(true))
-            }}
-          >
-            {product.name}
-          </Link>
+          <Row justify={'start'}>
+            <Link
+              style={{ width: '100%' }}
+              to={`#product_detail/${product.id}/${product.name}`}
+              onClick={() => {
+                if (typeof onSelect === 'function') onSelect(product)
+                dispatch(setModalStateForProductDetail(true))
+              }}
+            >
+              {product.name}
+            </Link>
+            <span style={{ fontSize: 14 }}>
+              USD $
+              {String(product.price).replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ',')}
+            </span>
+          </Row>
         }
       />
     </Card>
