@@ -1,3 +1,10 @@
+# how to run this project
+
+After clone the repository create a file called .env at the root of the project with the follow inside:
+REACT_APP_WEB_SERVICE_API=http://localhost:{port where the java project is running} -> http://localhost:8080
+
+the last step is open the command lline at the root of the project write "npm i" ton install all the dependencies
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
